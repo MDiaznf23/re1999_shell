@@ -1,0 +1,79 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": {
+    "type": "small",
+    "padding": {
+      "top": 2,
+      "left": 2
+    }
+  },
+  "display": {
+    "separator": " : "
+  },
+  "modules": [
+    // System
+    {
+      "type": "title",
+      "format": "{#36}┌─ {user-name}@{host-name} ────────────────────{#}"
+    },
+    {
+      "type": "os",
+      "key": "{#36}├─{#} {#33}OS      {#}"
+    },
+    {
+      "type": "kernel",
+      "key": "{#36}├─{#} {#33}Kernel  {#}"
+    },
+    {
+      "type": "shell",
+      "key": "{#36}├─{#} {#33}Shell   {#}"
+    },
+    {
+      "type": "wm",
+      "key": "{#36}├─{#} {#33}WM      {#}"
+    },
+    {
+      "type": "terminal",
+      "key": "{#36}├─{#} {#33}Terminal{#}"
+    },
+    {
+      "type": "uptime",
+      "key": "{#36}└─{#} {#33}Uptime  {#}"
+    },
+    {
+      "type": "custom",
+      "format": ""
+    },
+    // Hardware
+    {
+      "type": "custom",
+      "format": "{#35}┌─ Hardware ───────────────────────────────{#}"
+    },
+    {
+      "type": "cpu",
+      "format": "{name} ({cores-physical})",
+      "key": "{#35}├─{#} {#33}CPU     {#}"
+    },
+    {
+      "type": "gpu",
+      "format": "{name} [{type}]",
+      "key": "{#35}├─{#} {#33}GPU     {#}"
+    },
+    {
+      "type": "memory",
+      "key": "{#35}├─{#} {#33}RAM     {#}"
+    },
+    {
+      "type": "swap",
+      "key": "{#35}└─{#} {#33}SWAP    {#}"
+    },
+    {
+      "type": "custom",
+      "format": ""
+    },
+    {
+      "type": "colors",
+      "symbol": "circle"
+    }
+  ]
+}
