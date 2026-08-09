@@ -166,17 +166,27 @@ PanelWindow {
           }
         }
         wallpaperModel.insert(insertAt, { thumbpath: parts[0], wallpath: parts[1], isLoading: false })
-
-        if (parts[1] === wallpaperPicker.activeWallpath) {
-          wallpaperPicker.initializing = true
-          wallpaperPicker.baselineIndex = insertAt
-          wallpaperList.currentIndex = insertAt
-          initializingResetTimer.restart()
-        }
+        // Sengaja TIDAK set currentIndex di sini. Posisi item bisa masih
+        // bergeser kalau item lain yang alfabetnya lebih awal baru masuk
+        // belakangan (generate-thumbs.sh loop per-ekstensi, bukan alfabet
+        // gabungan) — currentIndex gak otomatis ngikutin pergeseran itu.
+        // Resolusi index final dilakukan sekali di onRunningChanged, setelah
+        // semua item pasti sudah masuk & posisinya stabil.
       }
     }
     onRunningChanged: {
-      if (!running) wallpaperPicker.modelReady = true
+      if (!running) {
+        wallpaperPicker.modelReady = true
+        for (var i = 0; i < wallpaperModel.count; i++) {
+          if (wallpaperModel.get(i).wallpath === wallpaperPicker.activeWallpath) {
+            wallpaperPicker.initializing = true
+            wallpaperPicker.baselineIndex = i
+            wallpaperList.currentIndex = i
+            initializingResetTimer.restart()
+            break
+          }
+        }
+      }
     }
   }
 

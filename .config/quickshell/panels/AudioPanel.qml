@@ -30,8 +30,12 @@ PanelWindow {
     }
   }
 
-  anchors { top: true; right: true }
-  margins { top: 70; right: 10 }
+  anchors {
+    top: true
+    bottom: true
+    left: true
+    right: true
+  }
 
   color: "transparent"
   exclusionMode: ExclusionMode.Ignore
@@ -45,9 +49,19 @@ PanelWindow {
 
   signal requestClose()
 
+  MouseArea {
+    anchors.fill: parent
+    onClicked: root.requestClose()
+  }
+
   Rectangle {
     id: mainRect
-    anchors.fill: parent
+    width: root.implicitWidth
+    height: root.implicitHeight
+    anchors.top: parent.top
+    anchors.right: parent.right
+    anchors.topMargin: 70
+    anchors.rightMargin: 10
     color: "transparent"
 
     opacity: root.isShowing ? 1 : 0
@@ -75,6 +89,11 @@ PanelWindow {
       radius: 10
       border.color: Colors.outline_variant
       border.width: 2
+
+      MouseArea {              
+        anchors.fill: parent
+        onClicked: {}
+      }
 
       ColumnLayout {
         id: contentColumn

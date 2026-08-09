@@ -131,27 +131,34 @@ PanelWindow {
   PopupWindow {
     id: mediaPopup
     visible: leftBar.activePopup === "media"
-    implicitWidth: mediaContent.implicitWidth + 30
-    implicitHeight: mediaContent.implicitHeight + 30 + 12
     color: "transparent"
 
+    property real screenW: Quickshell.screens[0].width
     property real screenH: Quickshell.screens[0].height
+    property real barWidth: leftBar.implicitWidth
+
+    implicitWidth: screenW - barWidth
+    implicitHeight: screenH
 
     anchor {
       window: leftBar
-      edges: Edges.Right
-      rect: Qt.rect(
-        0,
-        0,
-        leftBar.implicitWidth,
-        620
-      )
+      edges: Edges.Top | Edges.Bottom | Edges.Right
+      rect: Qt.rect(barWidth, 0, screenW - barWidth, screenH)
+    }
+
+    MouseArea {
+      anchors.fill: parent
+      hoverEnabled: false
+      onClicked: leftBar.activePopup = ""
     }
 
     Item {
-      anchors.fill: parent
-      anchors.topMargin: 0
-      anchors.bottomMargin: 0
+      id: mediaBox
+      readonly property real anchorRegionHeight: 980
+      x: 4
+      y: (anchorRegionHeight - height) / 2
+      width: mediaContent.implicitWidth + 30
+      height: mediaContent.implicitHeight + 30 + 12
 
       opacity: mediaPopup.visible ? 1 : 0
       Behavior on opacity {
@@ -177,6 +184,11 @@ PanelWindow {
         border.color: Colors.outline_variant
         border.width: 1.5
         clip: true
+
+        MouseArea {
+          anchors.fill: parent
+          onClicked: {} 
+        }
 
         Media {
           id: mediaContent

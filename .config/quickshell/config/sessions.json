@@ -42,5 +42,26 @@
         "delay": 400
       }
     ]
+  },
+  {
+    "id": "test-session",
+    "name": "TEST SESSION",
+    "icon": "󰘚",
+    "layout": "master",
+    "mfact": 0.28,
+    "apps": [
+      {
+        "exec": "/home/diaz/.local/bin/openplc-editor --no-sandbox",
+        "class": "open-plc-editor",
+        "workspace": 4,
+        "delay": 0
+      },
+      {
+        "exec": "kitty",
+        "class": "kitty",
+        "workspace": 4,
+        "delay": 200
+      }
+    ]
   }
 ]

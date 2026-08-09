@@ -1,5 +1,4 @@
 #!/bin/bash
-# Fetch daftar tema (catalog.json) dari repo GitHub terpisah.
 
 set -uo pipefail
 

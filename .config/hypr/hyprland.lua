@@ -362,6 +362,12 @@ hl.window_rule({
     float = true,
 })
 
+hl.window_rule({
+    name = "no-border-quickshell",
+    match = { class = "^(org\\.quickshell)$", title = "^(quickshell)$" },
+    border_size = 0,
+})
+
 hl.workspace_rule({ workspace = "1", persistent = true })
 hl.workspace_rule({ workspace = "2", persistent = true })
 hl.workspace_rule({ workspace = "3", persistent = true })

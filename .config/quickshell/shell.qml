@@ -413,6 +413,10 @@ ShellRoot {
     visible: isPanelVisible
     dndActive: dndEnabled 
     onDndToggled: dndEnabled = !dndEnabled
+    onRequestClose: {                 
+      panelSettings.isShowing = false 
+      panelCloseTimer.start()         
+    }
     onOpenWifi: {
       isPanelVisible = false
       isWifiPanelVisible = true

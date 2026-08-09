@@ -56,9 +56,12 @@ PanelWindow {
   signal openWifi()
   signal openAudio()
   signal openNotifications()
+  signal requestClose()
 
   anchors {
     top: true
+    bottom: true
+    left: true
     right: true
   }
 
@@ -90,11 +93,19 @@ PanelWindow {
     }
   }
 
-  Item {
+  MouseArea {
     anchors.fill: parent
-    anchors.bottomMargin: 12 
-    anchors.leftMargin: 12
+    onClicked: root.requestClose()
+  }
 
+
+  Item {
+    width: root.implicitWidth - 12
+    height: root.implicitHeight - 12
+    anchors.top: parent.top
+    anchors.right: parent.right
+    anchors.topMargin: 0
+    anchors.rightMargin: 0
 
     Rectangle {
       id: mainRect
@@ -102,6 +113,11 @@ PanelWindow {
       color: "transparent"
 
       radius: 12
+
+      MouseArea {
+        anchors.fill: parent
+        onClicked: {} 
+      }
 
       opacity: root.isShowing ? 1 : 0
       Behavior on opacity {
