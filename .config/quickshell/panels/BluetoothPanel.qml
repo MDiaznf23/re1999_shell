@@ -204,14 +204,11 @@ PanelWindow {
             id: deviceItem
             required property var modelData
 
-            // Identitas unik pakai address, BUKAN name
             readonly property string deviceAddress: modelData.address
             readonly property bool isConnected: modelData.connected
 
-            // isProcessing dicomputasi dari singleton — tidak bisa ada dua device processing
             readonly property bool isProcessing: BluetoothService.connectingAddress === deviceAddress
 
-            // Ketika koneksi selesai (connected berubah), beritahu service untuk clear
             onIsConnectedChanged: {
                 BluetoothService.clearConnecting(deviceAddress)
             }
@@ -304,11 +301,9 @@ PanelWindow {
                 anchors.fill: parent
                 hoverEnabled: true
 
-                // Disable klik kalau ada device lain yang sedang diproses
                 enabled: BluetoothService.connectingAddress === "" || BluetoothService.connectingAddress === deviceItem.deviceAddress
 
                 onClicked: {
-                    // Panggil lewat service, bukan langsung ke modelData
                     BluetoothService.connectDevice(deviceItem.deviceAddress)
 
                     var actionMsg = deviceItem.isConnected

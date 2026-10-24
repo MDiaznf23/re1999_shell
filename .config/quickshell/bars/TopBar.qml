@@ -8,6 +8,7 @@ import Quickshell.Wayland
 import Quickshell.Services.SystemTray
 import "../services"
 import ".."
+import "../components"
 
 PanelWindow {
   id: topBar
@@ -404,13 +405,11 @@ PanelWindow {
         }
       }
 
-      Text {
+      SvgIcon {
         id: iconText
-        text: StateGlobals.weatherIcon
+        source: StateGlobals.weatherIconSource
+        size: 40
         color: Colors.icon_on_container
-        font.family: "JetBrainsMono Nerd Font"
-        font.pixelSize: 32
-        transform: Translate { y: -4 }
       }
 
       // Spacer
@@ -419,120 +418,53 @@ PanelWindow {
       } 
 
       Row {
-        spacing: 12
+        spacing: 20
 
-        Rectangle {
-          id: wifiRect
-          width: wifiLayout.width
-          height: 32
-          color: "transparent"
-          radius: 15
+        Repeater {
+          model: [
+            { icon: Icons.url("wifi"), label: StateGlobals.wifiSSID,
+              font: "Playfair Display", size: 36, dy: -5, sp: -28, w: 40, lm: 36, adj: 16 },
+            { icon: StateGlobals.batIconSource, label: StateGlobals.batDesc,
+              font: "Josefin Sans", size: 50, dy: -2, sp: -32, w: 48, lm: 40, adj: 0 },
+            { icon: BluetoothService.iconSource,
+  label: BluetoothService.hasConnected ? BluetoothService.connectedDevices[0].name : "No device",
+  font: "Playfair Display", size: 32, dy: -3, sp: -36, w: 48, lm: 40, adj: 26 }
+          ]
 
-          RowLayout {
-            id: wifiLayout
-            anchors.centerIn: parent
-            spacing: -30 
+          delegate: Rectangle {
+            width: lay.width - modelData.adj
+            height: 32
+            color: "transparent"
+            radius: 15
 
-            Text {
-              text: StateGlobals.wifiIcon
-              color: Colors.text_variant1
-              font.family: "JetBrainsMono Nerd Font"
-              font.pixelSize: 40
-              transform: Translate { y: -2 }
-              z: 1
-            }
+            RowLayout {
+              id: lay
+              anchors.centerIn: parent
+              spacing: modelData.sp
 
-            Rectangle {
-              color: Qt.alpha(Colors.topbar_gradient1, 0.8)
-              radius: 2
-              implicitWidth: wifiDescText.implicitWidth + 40
-              implicitHeight: 24
-              Text {
-                id: wifiDescText
-                anchors.left: parent.left
-                anchors.leftMargin: 32
-                anchors.verticalCenter: parent.verticalCenter
-                text: StateGlobals.wifiSSID
+              SvgIcon {
+                source: modelData.icon
+                size: modelData.size
                 color: Colors.text_variant1
-                font.family: "Playfair Display"
-                font.pixelSize: 16
+                transform: Translate { y: modelData.dy }
+                z: 1
               }
-            } 
-          }
-        }
 
-        // Rectangle 2: Battery
-        Rectangle {
-          id: batteryRect
-          width: batLayout.width
-          height: 32
-          color: "transparent"
-          radius: 15
-          RowLayout {
-            id: batLayout
-            anchors.centerIn: parent
-            spacing: -32
-            Text {
-              text: StateGlobals.batIcon
-              color: Colors.text_variant1
-              font.family: "JetBrainsMono Nerd Font"
-              font.pixelSize: 40
-              transform: Translate { y: -2 }
-              z: 1
-            }
-            Rectangle {
-              color: Qt.alpha(Colors.topbar_gradient1, 0.8)
-              radius: 2
-              implicitWidth: batDescText.implicitWidth + 48
-              implicitHeight: 24
-              Text {
-                id: batDescText
-                anchors.left: parent.left
-                anchors.leftMargin: 40
-                anchors.verticalCenter: parent.verticalCenter
-                text: StateGlobals.batDesc
-                color: Colors.text_variant1
-                font.family: "Josefin Sans"
-                font.pixelSize: 16
-              }
-            }
-          }
-        }
-
-        Rectangle {
-          id: btRect
-          width: btLayout.width
-          height: 32
-          color: "transparent"
-          radius: 15
-          RowLayout {
-            id: btLayout
-            anchors.centerIn: parent
-            spacing: -32
-            Text {
-              text: BluetoothService.icon
-              color: Colors.text_variant1
-              font.pixelSize: 40
-              font.family: "JetBrainsMono Nerd Font"
-              transform: Translate { y: -3 }
-              z: 1
-            }
-            Rectangle {
-              color: Qt.alpha(Colors.topbar_gradient1, 0.8)
-              radius: 2
-              implicitWidth: btDescText.implicitWidth + 48
-              implicitHeight: 24
-              Text {
-                id: btDescText
-                anchors.left: parent.left
-                anchors.leftMargin: 40
-                anchors.verticalCenter: parent.verticalCenter
-                text: BluetoothService.hasConnected
-                ? BluetoothService.connectedDevices[0].name
-                : "No device"
-                color: Colors.text_variant1
-                font.family: "Playfair Display"
-                font.pixelSize: 16
+              Rectangle {
+                color: Qt.alpha(Colors.topbar_gradient1, 0.3)
+                radius: 2
+                implicitWidth: txt.implicitWidth + modelData.w
+                implicitHeight: 24
+                Text {
+                  id: txt
+                  anchors.left: parent.left
+                  anchors.leftMargin: modelData.lm
+                  anchors.verticalCenter: parent.verticalCenter
+                  text: modelData.label
+                  color: Colors.text_variant1
+                  font.family: modelData.font
+                  font.pixelSize: 16
+                }
               }
             }
           }
@@ -541,6 +473,7 @@ PanelWindow {
 
       Text {
         text: ""
+        leftPadding: 16
         color: Colors.text_variant1
         font.family: "JetBrainsMono Nerd Font"
         font.pixelSize: 24

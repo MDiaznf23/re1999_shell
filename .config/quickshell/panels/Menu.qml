@@ -212,7 +212,6 @@ PanelWindow {
     border.color: Colors.outline_variant
     border.width: 2
 
-    // tambahkan child baru di dalam mainRect, sebelum ColumnLayout:
     Rectangle {
       anchors.fill: parent
       anchors.margins: 4

@@ -97,12 +97,9 @@ PanelWindow {
 
     onRunningChanged: {
       if (!running) {
-        // Script mati/crash → jadwalkan restart, stop animasi
         root.isScanning = false
         scanRestartTimer.start()
       }
-      // isScanning TIDAK diset true di sini
-      // animasi hanya dari tombol scan manual
     }
   }
 

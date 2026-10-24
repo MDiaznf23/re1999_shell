@@ -32,7 +32,7 @@ Item {
     id: mediaRow
     spacing: 12
 
-    // --- COVER ART, bingkai kuningan + vignette ---
+    // --- COVER ART, vignette ---
     Item {
       id: coverFrame
       width: 130
@@ -56,40 +56,40 @@ Item {
       }
 
       ClippingWrapperRectangle {
-  anchors.fill: parent
-  anchors.margins: 2
-  radius: 8
-  z: 1
+        anchors.fill: parent
+        anchors.margins: 2
+        radius: 8
+        z: 1
 
-  Item {
-    anchors.fill: parent
+        Item {
+          anchors.fill: parent
 
-    Image {
-      id: coverImage
-      anchors.fill: parent
-      source: MediaState.mediaData.cover ? "file://" + MediaState.mediaData.cover : ""
-      visible: MediaState.mediaData.cover !== undefined && MediaState.mediaData.cover !== ""
-      fillMode: Image.PreserveAspectCrop
-      smooth: true
-      opacity: 0
-      Behavior on opacity {
-        NumberAnimation { duration: 300; easing.type: Easing.InOutQuad }
+          Image {
+            id: coverImage
+            anchors.fill: parent
+            source: MediaState.mediaData.cover ? "file://" + MediaState.mediaData.cover : ""
+            visible: MediaState.mediaData.cover !== undefined && MediaState.mediaData.cover !== ""
+            fillMode: Image.PreserveAspectCrop
+            smooth: true
+            opacity: 0
+            Behavior on opacity {
+              NumberAnimation { duration: 300; easing.type: Easing.InOutQuad }
+            }
+            onVisibleChanged: opacity = visible ? 1 : 0
+          }
+
+          Rectangle {
+            anchors.fill: parent
+            radius: 8
+            gradient: Gradient {
+              orientation: Gradient.Vertical
+              GradientStop { position: 0.0; color: "#33000000" }
+              GradientStop { position: 0.6; color: "#00000000" }
+              GradientStop { position: 1.0; color: "#66000000" }
+            }
+          }
+        }
       }
-      onVisibleChanged: opacity = visible ? 1 : 0
-    }
-
-    Rectangle {
-      anchors.fill: parent
-      radius: 8
-      gradient: Gradient {
-        orientation: Gradient.Vertical
-        GradientStop { position: 0.0; color: "#33000000" }
-        GradientStop { position: 0.6; color: "#00000000" }
-        GradientStop { position: 1.0; color: "#66000000" }
-      }
-    }
-  }
-}
 
       Text {
         text: "✦"
@@ -104,7 +104,7 @@ Item {
       }
     }
 
-    // --- KOLOM KANAN: info, player selector, progress, controls ---
+    // --- info, player selector, progress, controls ---
     Column {
       spacing: 6
       anchors.verticalCenter: parent.verticalCenter
@@ -225,7 +225,7 @@ Item {
         }
       }
 
-      // progress bar + timer, sejajar horizontal
+      // progress bar + timer
       Row {
         spacing: 6
         width: parent.width
@@ -336,68 +336,68 @@ Item {
         }
       }
 
-      // tombol kontrol
+      // control
       Row {
-  spacing: 18
-  height: 32
+        spacing: 18
+        height: 32
 
-  Item {
-    width: 28; height: 28
-    anchors.verticalCenter: parent.verticalCenter
-    MouseArea {
-      anchors.fill: parent
-      cursorShape: Qt.PointingHandCursor
-      onClicked: MediaState.executePlayerctl("previous")
-      Text {
-        anchors.centerIn: parent
-        text: "󰒮"
-        color: root.r99_paper_dim
-        font.pixelSize: 18
+        Item {
+          width: 28; height: 28
+          anchors.verticalCenter: parent.verticalCenter
+          MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: MediaState.executePlayerctl("previous")
+            Text {
+              anchors.centerIn: parent
+              text: "󰒮"
+              color: root.r99_paper_dim
+              font.pixelSize: 18
+            }
+          }
+        }
+
+        Item {
+          width: 32; height: 32
+          anchors.verticalCenter: parent.verticalCenter
+          MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: MediaState.executePlayerctl("play-pause")
+
+            Rectangle {
+              anchors.fill: parent
+              radius: width / 2
+              color: "transparent"
+              border.width: 1.5
+              border.color: root.r99_gold
+            }
+
+            Text {
+              anchors.centerIn: parent
+              text: MediaState.mediaData.status === "Playing" ? "󰏤" : "󰐊"
+              color: root.r99_accent
+              font.pixelSize: 18
+            }
+          }
+        }
+
+        Item {
+          width: 28; height: 28
+          anchors.verticalCenter: parent.verticalCenter
+          MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: MediaState.executePlayerctl("next")
+            Text {
+              anchors.centerIn: parent
+              text: "󰒭"
+              color: root.r99_paper_dim
+              font.pixelSize: 18
+            }
+          }
+        }
       }
-    }
-  }
-
-  Item {
-    width: 32; height: 32
-    anchors.verticalCenter: parent.verticalCenter
-    MouseArea {
-      anchors.fill: parent
-      cursorShape: Qt.PointingHandCursor
-      onClicked: MediaState.executePlayerctl("play-pause")
-
-      Rectangle {
-        anchors.fill: parent
-        radius: width / 2
-        color: "transparent"
-        border.width: 1.5
-        border.color: root.r99_gold
-      }
-
-      Text {
-        anchors.centerIn: parent
-        text: MediaState.mediaData.status === "Playing" ? "󰏤" : "󰐊"
-        color: root.r99_accent
-        font.pixelSize: 18
-      }
-    }
-  }
-
-  Item {
-    width: 28; height: 28
-    anchors.verticalCenter: parent.verticalCenter
-    MouseArea {
-      anchors.fill: parent
-      cursorShape: Qt.PointingHandCursor
-      onClicked: MediaState.executePlayerctl("next")
-      Text {
-        anchors.centerIn: parent
-        text: "󰒭"
-        color: root.r99_paper_dim
-        font.pixelSize: 18
-      }
-    }
-  }
-}
     }
   }
 

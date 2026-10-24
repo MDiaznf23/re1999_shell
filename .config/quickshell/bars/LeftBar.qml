@@ -97,7 +97,6 @@ PanelWindow {
     Layout.alignment: Qt.AlignHCenter
     width: 48
     height: 48
-    // eye item tidak pakai visible binding — selalu tampil
 
     Image {
       id: svgIcon

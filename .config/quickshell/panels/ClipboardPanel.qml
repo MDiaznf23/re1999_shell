@@ -175,14 +175,6 @@ PanelWindow {
             Layout.fillWidth: true
 
             Text {
-              text: "󰅍"
-              color: Colors.header_title
-              font.pixelSize: 14
-              font.family: "JetBrainsMono Nerd Font"
-              anchors.verticalCenter: parent.verticalCenter
-            }
-
-            Text {
               text: "Clipboard"
               color: Colors.text_variant1
               font.pixelSize: 14

@@ -6,6 +6,8 @@ import Quickshell.Wayland
 import Quickshell.Io
 import Quickshell.Bluetooth
 import ".."
+import "../components"
+import "../services"
 
 PanelWindow {
   id: root
@@ -17,7 +19,7 @@ PanelWindow {
   property int notifItemHeight: 50
   property int buttonHeight: 55
   property int fontsizeButton: 9
-  property int iconsizeButton: 20
+  property int iconsizeButton: 24
 
   property bool wifiEnabled: false
   property bool dndActive: false 
@@ -179,11 +181,11 @@ PanelWindow {
                       color: root.wifiEnabled ? Colors.wifi_btn_active : Colors.wifi_btn_inactive
                       radius: 8
 
-                      Text {
+                      SvgIcon {
                         anchors.centerIn: parent
-                        text: ""
+                        source: Icons.url("wifi")
+                        size: iconsizeButton
                         color: Colors.text_variant3
-                        font.pixelSize: iconsizeButton
                       }
 
                       MouseArea {
@@ -215,11 +217,11 @@ PanelWindow {
                       : Colors.bt_btn_inactive
                       radius: 8
 
-                      Text {
+                      SvgIcon {
                         anchors.centerIn: parent
-                        text: "󰂯"
+                        source: Icons.url("bluetooth")
+                        size: iconsizeButton
                         color: Colors.text_variant2
-                        font.pixelSize: iconsizeButton
                       }
 
                       MouseArea {
@@ -253,11 +255,11 @@ PanelWindow {
 
                       property bool nightModeOn: false
 
-                      Text {
+                      SvgIcon {
                         anchors.centerIn: parent
-                        text: ""
+                        source: Icons.url("moon")
+                        size: iconsizeButton
                         color: Colors.text_variant4
-                        font.pixelSize: iconsizeButton
                       }
 
                       MouseArea {
@@ -293,11 +295,11 @@ PanelWindow {
                       color: dndActive ? Colors.dnd_btn_active : Colors.dnd_btn_inactive
                       radius: 8
 
-                      Text {
+                      SvgIcon {
                         anchors.centerIn: parent
-                        text: "󰂛"
+                        source: Icons.url("bell-off")
+                        size: iconsizeButton
                         color: Colors.text_variant7
-                        font.pixelSize: iconsizeButton
                       }
 
                       MouseArea {
@@ -326,11 +328,11 @@ PanelWindow {
                       color: Colors.colorpicker_btn_bg
                       radius: 8
 
-                      Text {
+                      SvgIcon {
                         anchors.centerIn: parent
-                        text: ""
+                        source: Icons.url("pipette")
+                        size: iconsizeButton
                         color: Colors.colorpicker_btn_icon
-                        font.pixelSize: iconsizeButton
                       }
 
                       MouseArea {
@@ -364,11 +366,11 @@ PanelWindow {
 
                       property bool bluetoothModeOn: false
 
-                      Text {
+                      SvgIcon {
                         anchors.centerIn: parent
-                        text: "󰓃"
-                        color: Colors.audio_btn_icon                       
-                        font.pixelSize: iconsizeButton + 8
+                        source: Icons.url("speaker")
+                        size: iconsizeButton
+                        color: Colors.audio_btn_icon
                       }
 
                       MouseArea {
@@ -436,17 +438,15 @@ PanelWindow {
                     Layout.fillWidth: true
                     spacing: 16
 
-                    Rectangle {
+                    Item {
                       Layout.alignment: Qt.AlignVCenter
                       Layout.leftMargin: 5
-                      width: 18
-                      height: 22
-                      color: "transparent"
-                      Text {
+                      Layout.preferredWidth: 24
+                      Layout.preferredHeight: 24
+                      SvgIcon {
                         anchors.centerIn: parent
-                        text: ""
-                        font.family: "JetBrainsMono Nerd Font"
-                        font.pixelSize: 15
+                        source: Icons.url("sun")
+                        size: 20
                         color: Colors.text
                       }
                     }
@@ -454,6 +454,7 @@ PanelWindow {
                     Slider {
                       id: panelBrightnessSlider
                       Layout.preferredWidth: 130
+                      Layout.alignment: Qt.AlignVCenter
                       implicitHeight: 36
                       from: 1; to: 100; value: 50
 
@@ -494,7 +495,6 @@ PanelWindow {
                       }
                     }
 
-                    // ← angka pindah ke sini
                     Text {
                       text: Math.round(panelBrightnessSlider.value) + ""
                       font.pixelSize: 12
@@ -511,17 +511,15 @@ PanelWindow {
                     Layout.fillWidth: true
                     spacing: 16
 
-                    Rectangle {
-                      Layout.alignment: Qt.AlignHCenter
+                    Item {
+                      Layout.alignment: Qt.AlignVCenter
                       Layout.leftMargin: 5
-                      width: 18
-                      height: 22
-                      color: "transparent"
-                      Text {
+                      Layout.preferredWidth: 24
+                      Layout.preferredHeight: 24
+                      SvgIcon {
                         anchors.centerIn: parent
-                        text: " "
-                        font.family: "JetBrainsMono Nerd Font"
-                        font.pixelSize: 14
+                        source: Icons.volume(panelVolumeSlider.value, StateGlobals.volMuted)
+                        size: 18
                         color: Colors.text
                       }
                     }
@@ -529,6 +527,7 @@ PanelWindow {
                     Slider {
                       id: panelVolumeSlider
                       Layout.preferredWidth: 130
+                      Layout.alignment: Qt.AlignVCenter
                       implicitHeight: 36
                       from: 0; to: 100; value: 50
 
@@ -615,11 +614,11 @@ PanelWindow {
                       color: notifHeaderBtn.containsMouse ? Colors.notif_btn_hovered : "transparent"
                       radius: 4
 
-                      Text {
+                      SvgIcon {
                         anchors.centerIn: parent
-                        text: ""
+                        source: Icons.url("chevron-right")
+                        size: 16
                         color: Colors.notif_btn_icon
-                        font.pixelSize: 14
                       }
 
                       MouseArea {
