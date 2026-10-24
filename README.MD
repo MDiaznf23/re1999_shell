@@ -2,11 +2,11 @@
 
 Reverse: 1999 themed Arch Linux rice, built with Hyprland and Quickshell.
 
-![preview](preview.png)
+![preview](Screenshots/screenshot_20260728_132033.png)
 
 ## Showcase
 
-Soonnnnn
+https://github.com/user-attachments/assets/03a23322-6431-4034-ab4f-b54b637c0a22
 
 ## Components
 
@@ -17,7 +17,7 @@ Soonnnnn
 | Terminal | Kitty |
 | CLI shell | Fish |
 | File manager | Dolphin |
-| Colors | m3wal, warnaza |
+| Theme engine | m3wal, warnaza |
 | Audio | PipeWire |
 
 ## Installation
@@ -46,11 +46,12 @@ Log out and back in, then start `Hyprland`.
 ## Structure
 
 ```
-.config/     configs (hypr, quickshell, etc.)
-.icons/      cursor theme
-.local/      local data
-Fonts/       extra fonts
-Wallpapers/  wallpapers
+.config/      configs (hypr, quickshell, etc.)
+.icons/       cursor theme
+.local/       local data
+Fonts/        extra fonts
+Screenshots/  preview images
+Wallpapers/   wallpapers
 ```
 
 ## Notes
