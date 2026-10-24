@@ -93,13 +93,12 @@ fi
 # ─── 5. Setup Dotfiles ────────────────────────────────────────
 section "Setup Dotfiles"
 
-# Kill qs first (if running) before ~/.config gets overwritten.
-# This matters specifically when re-running this script from inside
-# a WM already using this same ricing: ~/.config/quickshell is already
-# a symlink, so the cp -rf below would write straight into the folder
-# a live instance is reading from if it isn't killed first.
 pkill -f "^qs$" >/dev/null 2>&1 || true
 sleep 0.3
+
+if [ -L "$HOME/.config/quickshell" ]; then
+    rm "$HOME/.config/quickshell"
+fi
 
 if [ -d "$HOME/.config" ]; then
     info "Backing up ~/.config → ~/.config.bak"
@@ -133,6 +132,7 @@ STATE_FILE="$HOME/.cache/quickshell/current-theme"
 mkdir -p "$THEMES_DIR" "$HYPR_DIR" "$STAGING_DIR" "$(dirname "$STATE_FILE")"
 
 # Move the quickshell contents out of ~/.config into its final home,
+# then turn ~/.config/quickshell into a symlink pointing back to it.
 if [ -d "$HOME/.config/quickshell" ] && [ ! -L "$HOME/.config/quickshell" ]; then
     rm -rf "$THEMES_DIR/$THEME_NAME"
     mv "$HOME/.config/quickshell" "$THEMES_DIR/$THEME_NAME"
@@ -143,6 +143,8 @@ else
 fi
 
 # Move hyprland.lua into a per-theme file (<name>.lua), point
+# active-ricing.lua at it, and create the hyprland.lua loader
+# (just require("active-ricing")).
 if [ -f "$HYPR_DIR/hyprland.lua" ] && [ ! -L "$HYPR_DIR/hyprland.lua" ]; then
     mv "$HYPR_DIR/hyprland.lua" "$HYPR_DIR/$THEME_NAME.lua"
     ln -sfn "$HYPR_DIR/$THEME_NAME.lua" "$HYPR_DIR/active-ricing.lua"
@@ -154,9 +156,6 @@ else
     info "~/.config/hypr/hyprland.lua is already a loader/symlink, skipping"
 fi
 
-# Sync the staging git checkout (this repo already has .git) so the
-# Themes tab immediately reports "installed" instead of "not_installed",
-# without needing a fresh clone from GitHub.
 rm -rf "$STAGING_DIR/$THEME_NAME"
 cp -r "$DOTFILES_DIR" "$STAGING_DIR/$THEME_NAME"
 success "Staging git checkout synced for update detection"
