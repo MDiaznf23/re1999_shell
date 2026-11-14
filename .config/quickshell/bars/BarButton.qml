@@ -2,6 +2,7 @@
 import QtQuick
 import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
+import "../components"   
 import ".."
 
 Item {
@@ -15,11 +16,16 @@ Item {
   property bool active: false
   signal clicked()
 
+  readonly property color accent: "#C9A84C"
+  readonly property color fg: root.active ? accent : Colors.text_variant1
+
   Rectangle {
     anchors.fill: parent
     radius: 10
-    color: root.active ? Qt.rgba(201/255, 168/255, 76/255, 0.15) : (hov.containsMouse ? Qt.rgba(1,1,1,0.05) : "transparent")
-    border.color: root.active ? "#C9A84C" : "transparent"
+    color: root.active
+           ? Qt.alpha(root.accent, 0.15)
+           : (hov.containsMouse ? Qt.alpha(Colors.text_variant1, 0.08) : "transparent")
+    border.color: root.active ? root.accent : "transparent"
     border.width: 1
 
     Behavior on color { ColorAnimation { duration: 120 } }
@@ -28,31 +34,15 @@ Item {
       anchors.centerIn: parent
       spacing: 4
 
-      Item {
+      SvgIcon {
         Layout.alignment: Qt.AlignHCenter
-        width: 48
-        height: 48
+        source: root.iconSource
+        size: 48
+        color: root.fg
+        opacity: root.active ? 1.0 : 0.9
 
-        Image {
-          id: svgIcon
-          anchors.fill: parent
-          source: root.iconSource
-          fillMode: Image.PreserveAspectFit
-          sourceSize.width: 48   // force SVG render di ukuran ini
-          sourceSize.height: 48
-          visible: false
-          smooth: true
-        }
-
-        ColorOverlay {
-          anchors.fill: svgIcon
-          source: svgIcon
-          color: root.active ? "#C9A84C" : "#F0EDE6"
-          opacity: root.active ? 1.0 : 0.9
-
-          Behavior on color { ColorAnimation { duration: 120 } }
-          Behavior on opacity { NumberAnimation { duration: 120 } }
-        }
+        Behavior on color { ColorAnimation { duration: 120 } }
+        Behavior on opacity { NumberAnimation { duration: 120 } }
       }
 
       Text {
@@ -61,7 +51,7 @@ Item {
         font.pixelSize: 17
         font.family: "Playfair Display"
         font.letterSpacing: 0.8
-        color: root.active ? "#C9A84C" : "#F0EDE6"
+        color: root.fg
         opacity: root.active ? 1.0 : 0.9
 
         Behavior on color { ColorAnimation { duration: 120 } }

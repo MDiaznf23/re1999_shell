@@ -3,7 +3,6 @@ import Quickshell.Io
 import QtQuick.Shapes
 import QtQuick.Layouts 
 import Quickshell
-import Qt5Compat.GraphicalEffects
 import Quickshell.Wayland
 import Quickshell.Services.SystemTray
 import "../services"
@@ -170,23 +169,17 @@ PanelWindow {
               }
             }
 
-              // Ikon di tengah
+            // Ikon di tengah
             Item {
               width: 20
               height: 20
               anchors.centerIn: parent
-              Image {
-                id: iconImg
+
+              SvgIcon {
                 anchors.fill: parent
                 source: Qt.resolvedUrl(Quickshell.shellDir + "/assets/CachyOS.svg")
-                sourceSize.width: 20
-                sourceSize.height: 20
-                visible: false
-              }
-              ColorOverlay {
-                anchors.fill: iconImg
-                source: iconImg
-                color: "#FFFFFF"
+                size: 20
+                color: Colors.text_variant1
               }
 
               MouseArea {
@@ -204,7 +197,7 @@ PanelWindow {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: Qt.formatTime(StateGlobals.clockDate, "hh:mm")
-                color: "#FFFFFF"
+                color: Colors.text_variant1
                 font.pixelSize: 14
                 font.family: "Josefin Sans"
             }
@@ -212,7 +205,7 @@ PanelWindow {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: Qt.formatDate(StateGlobals.clockDate, "ddd, dd MMM")
-                color: "#FFFFFF"
+                color: Colors.text_variant1
                 font.pixelSize: 12
                 font.family: "Playfair Display"
             }
@@ -232,11 +225,6 @@ PanelWindow {
           
           property var workspaceList: []
 
-          Process {
-            id: hyprDispatch
-            running: false 
-            command: []    
-          }
 
           Process {
             id: workProc
@@ -395,8 +383,7 @@ PanelWindow {
                   anchors.fill: parent
                   hoverEnabled: true
                   onClicked: {
-                    hyprDispatch.command = ["hyprctl", "dispatch", "hl.dsp.focus({ workspace = " + modelData.id.toString() + " })"]
-                    hyprDispatch.running = true
+                    Compositor.focusWorkspace(modelData.id)
                   }
                 }
               } 
@@ -472,7 +459,7 @@ PanelWindow {
       }
 
       Text {
-        text: ""
+        text: ""
         leftPadding: 16
         color: Colors.text_variant1
         font.family: "JetBrainsMono Nerd Font"

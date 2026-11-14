@@ -67,6 +67,7 @@ ShellRoot {
   IpcHandler {
     target: "snapshotsession"
     function toggle() {
+        if (!Compositor.hasSessions) return
         if (isSnapshotSessionVisible) {
             snapshotSession.isShowing = false
             snapshotSessionCloseTimer.start()

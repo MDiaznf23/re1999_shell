@@ -2,10 +2,11 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
-import Qt5Compat.GraphicalEffects
 import Quickshell.Io
+import Qt5Compat.GraphicalEffects
 import "../panels"
 import "../services"
+import "../components"
 import ".."
 
 PanelWindow {
@@ -40,90 +41,82 @@ PanelWindow {
     border.width: 1.5
 
     ColumnLayout {
-  anchors {
-    top: parent.top
-    bottom: parent.bottom
-    horizontalCenter: parent.horizontalCenter
-  }
+      anchors {
+        top: parent.top
+        bottom: parent.bottom
+        horizontalCenter: parent.horizontalCenter
+      }
 
-  Item { Layout.fillHeight: true }
+      Item { Layout.fillHeight: true }
 
-  BarButton {
-    visible: !leftBar.shellHidden
-    iconSource: "../assets/power.svg"
-    label: "Power"
-    active: false
-    onClicked: {
-      activePopup = ""
-      leftBar.requestPowerMenu()
+      BarButton {
+        visible: !leftBar.shellHidden
+        iconSource: "../assets/power.svg"
+        label: "Power"
+        active: false
+        onClicked: {
+          activePopup = ""
+          leftBar.requestPowerMenu()
+        }
+      }
+
+      Process {
+        id: fileManagerProcess
+        command: ["dolphin"]
+      }
+
+      BarButton {
+        visible: !leftBar.shellHidden
+        iconSource: "../assets/folder.svg"
+        label: "Files"
+        active: false
+        onClicked: fileManagerProcess.running = true
+      }
+
+      BarButton {
+        visible: !leftBar.shellHidden
+        iconSource: "../assets/music.svg"
+        label: "Media"
+        active: leftBar.activePopup === "media"
+        onClicked: leftBar.togglePopup("media")
+      }
+
+      BarButton {
+        visible: !leftBar.shellHidden
+        iconSource: "../assets/menu.svg"
+        label: "Menu"
+        active: false
+        onClicked: {
+          activePopup = ""
+          leftBar.menuClicked()
+        }
+      }
+
+      Item { Layout.fillHeight: true }
+
+      // ─── Eye toggle ───────────────────────────────────────────────────────
+      Item {
+        Layout.alignment: Qt.AlignHCenter
+        width: 48
+        height: 48
+
+        SvgIcon {
+          anchors.centerIn: parent
+          source: leftBar.shellHidden
+                  ? "../assets/eye-on-svgrepo-com.svg"
+                  : "../assets/eye-off-svgrepo-com.svg"
+          size: 48
+          color: leftBar.shellHidden ? "#C9A84C" : Colors.text_variant1
+          Behavior on color { ColorAnimation { duration: 120 } }
+        }
+
+        MouseArea {
+          anchors.fill: parent
+          cursorShape: Qt.PointingHandCursor
+          onClicked: leftBar.toggleShellHidden()
+        }
+      }
     }
-  }
-
-  Process {
-    id: fileManagerProcess
-    command: ["dolphin"]
-  }
-
-  BarButton {
-    visible: !leftBar.shellHidden
-    iconSource: "../assets/folder.svg"
-    label: "Files"
-    active: false
-    onClicked: fileManagerProcess.running = true
-  }
-
-  BarButton {
-    visible: !leftBar.shellHidden
-    iconSource: "../assets/music.svg"
-    label: "Media"
-    active: leftBar.activePopup === "media"
-    onClicked: leftBar.togglePopup("media")
-  }
-
-  BarButton {
-    visible: !leftBar.shellHidden
-    iconSource: "../assets/menu.svg"
-    label: "Menu"
-    active: false
-    onClicked: {
-      activePopup = ""
-      leftBar.menuClicked()
-    }
-  }
-
-  Item { Layout.fillHeight: true }
-
-  Item {
-    Layout.alignment: Qt.AlignHCenter
-    width: 48
-    height: 48
-
-    Image {
-      id: svgIcon
-      anchors.fill: parent
-      source: leftBar.shellHidden ? "../assets/eye-on-svgrepo-com.svg" : "../assets/eye-off-svgrepo-com.svg"
-      fillMode: Image.PreserveAspectFit
-      sourceSize.width: 48
-      sourceSize.height: 48
-      visible: false
-      smooth: true
-    }
-
-    ColorOverlay {
-      anchors.fill: svgIcon
-      source: svgIcon
-      color: leftBar.shellHidden ? "#C9A84C" : "#FFFFFF"
-      opacity: 1.0
-      Behavior on color { ColorAnimation { duration: 120 } }
-    }
-
-    MouseArea {
-      anchors.fill: parent
-      cursorShape: Qt.PointingHandCursor
-      onClicked: leftBar.toggleShellHidden()
-    }
-  }
-}
   }
 
   // ─── Media Popup ──────────────────────────────────────────────────────────
@@ -186,7 +179,7 @@ PanelWindow {
 
         MouseArea {
           anchors.fill: parent
-          onClicked: {} 
+          onClicked: {}
         }
 
         Media {
@@ -214,6 +207,6 @@ PanelWindow {
         leftBar.implicitWidth,
         implicitHeight
       )
-    } 
+    }
   }
 }
