@@ -125,8 +125,8 @@ PanelWindow {
     visible: leftBar.activePopup === "media"
     color: "transparent"
 
-    property real screenW: Quickshell.screens[0].width
-    property real screenH: Quickshell.screens[0].height
+    property real screenW: leftBar.screen ? leftBar.screen.width : Quickshell.screens[0].width
+    property real screenH: leftBar.screen ? leftBar.screen.height : Quickshell.screens[0].height
     property real barWidth: leftBar.implicitWidth
 
     implicitWidth: screenW - barWidth

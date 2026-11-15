@@ -314,72 +314,89 @@ ShellRoot {
     onTriggered: isNotificationPopupVisible = false
   }
   
-  TopBar {
-    id: topBar
-    shellHidden: isShellHidden
-    onRequestShellSettings: {
-      if (isShellSettingsVisible) {
-        shellSettings.isShowing = false
-        shellSettingsCloseTimer.start()
-      } else {
-        shellSettingsCloseTimer.stop()  
-        isShellSettingsVisible = true
+  Variants {
+    model: Quickshell.screens
+    TopBar {
+      id: topBar
+      required property var modelData
+      screen: modelData
+      shellHidden: isShellHidden
+      onRequestShellSettings: {
+        if (isShellSettingsVisible) {
+          shellSettings.isShowing = false
+          shellSettingsCloseTimer.start()
+        } else {
+          shellSettingsCloseTimer.stop()  
+          isShellSettingsVisible = true
+        }
       }
-    }
-    isMenuOpen: isMenuVisible
-    anyPanelOpen: isPanelVisible || isWifiPanelVisible || isBluetoothPanelVisible || isAudioPanelVisible || isNotificationPanelVisible || isClipboardPanelVisible
-    onMenuClicked: {
-      if (isMenuVisible) {
-        appMenu.isShowing = false
-        menuCloseTimer.start()
-      } 
-      else {
-        closeAllPanels()
-        isMenuVisible = true
+      isMenuOpen: isMenuVisible
+      anyPanelOpen: isPanelVisible || isWifiPanelVisible || isBluetoothPanelVisible || isAudioPanelVisible || isNotificationPanelVisible || isClipboardPanelVisible
+      onMenuClicked: {
+        if (isMenuVisible) {
+          appMenu.isShowing = false
+          menuCloseTimer.start()
+        } 
+        else {
+          closeAllPanels()
+          isMenuVisible = true
+        }
       }
-    }
 
-    onClipboardClicked: {
-      if (isClipboardPanelVisible) {
-        clipboardPanel.isShowing = false
-        clipboardCloseTimer.start()
-      } else {
-        closeSecondaryPanels()
-        isClipboardPanelVisible = true
+      onClipboardClicked: {
+        if (isClipboardPanelVisible) {
+          clipboardPanel.isShowing = false
+          clipboardCloseTimer.start()
+        } else {
+          closeSecondaryPanels()
+          isClipboardPanelVisible = true
+        }
+      }
+      onPanelClicked: {
+        if (isPanelVisible) {
+          panelSettings.isShowing = false
+          panelCloseTimer.start()   
+          notificationServer.clearAll()
+        } else {
+          closeSecondaryPanels()
+          isNotificationPopupVisible = false
+          isPanelVisible = true
+        }
       }
     }
-    onPanelClicked: {
-      if (isPanelVisible) {
-        panelSettings.isShowing = false
-        panelCloseTimer.start()   
-        notificationServer.clearAll()
-      } else {
-        closeSecondaryPanels()
-        isNotificationPopupVisible = false
-        isPanelVisible = true
-      }
-    }
-  }
   
-  LeftBar {
-    id: leftBar
-    shellHidden: isShellHidden
-    onRequestPowerMenu: isPowerMenuVisible = true
-    onMenuClicked: isMenuVisible = true
-    onToggleShellHidden: isShellHidden = !isShellHidden
   }
 
-  PanelWindow {
-    id: clickOverlay
-    visible: isShellHidden
-    anchors { top: true; bottom: true; left: true; right: true }
-    color: "transparent"
-    WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
-    WlrLayershell.layer: WlrLayer.Top
+  // Satu set bar per monitor.
+  Variants {
+    model: Quickshell.screens
+    LeftBar {
+      id: leftBar
+      required property var modelData
+      screen: modelData
+      shellHidden: isShellHidden
+      onRequestPowerMenu: isPowerMenuVisible = true
+      onMenuClicked: isMenuVisible = true
+      onToggleShellHidden: isShellHidden = !isShellHidden
+    }
+  }
 
-    MouseArea {
-      anchors.fill: parent
-      onClicked: isShellHidden = false
+  Variants {
+    model: Quickshell.screens
+    PanelWindow {
+      id: clickOverlay
+      required property var modelData
+      screen: modelData
+      visible: isShellHidden
+      anchors { top: true; bottom: true; left: true; right: true }
+      color: "transparent"
+      WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
+      WlrLayershell.layer: WlrLayer.Top
+
+      MouseArea {
+        anchors.fill: parent
+        onClicked: isShellHidden = false
+      }
     }
   }
 
